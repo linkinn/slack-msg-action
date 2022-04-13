@@ -1,11 +1,19 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Slack Send Message'
+description: 'Send message to slack and return thread id'
+author: 'Team Devops'
 inputs:
-  milliseconds: # change this
+  channel_id:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'add channel id'
+  payload:
+    required: true
+    description: 'add payload send message'
+  thread_ts:
+    required: false
+    description: 'add thread id'
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: 'arrow-right-circle'  
+  color: 'blue'
