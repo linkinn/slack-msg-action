@@ -7,6 +7,9 @@ jobs:
   slack:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Github
+        uses: actions/checkout@v3
+
       - name: Slack Send Message
         uses: ./
         with:
