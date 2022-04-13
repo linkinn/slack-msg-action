@@ -15,7 +15,8 @@ export async function slack({
 
     if (threadTS) {
       await webClient.chat.postMessage({
-        text: payload,
+        mrkdwn: true,
+        blocks: payload,
         channel: channelID,
         thread_ts: threadTS
       })
@@ -24,7 +25,8 @@ export async function slack({
     }
 
     const {message} = await webClient.chat.postMessage({
-      text: payload,
+      mrkdwn: true,
+      blocks: payload,
       channel: channelID
     })
 

@@ -121,14 +121,16 @@ function slack({ payload, channelID, threadTS }) {
             const webClient = new web_api_1.WebClient(slackToken);
             if (threadTS) {
                 yield webClient.chat.postMessage({
-                    text: payload,
+                    mrkdwn: true,
+                    blocks: payload,
                     channel: channelID,
                     thread_ts: threadTS
                 });
                 return;
             }
             const { message } = yield webClient.chat.postMessage({
-                text: payload,
+                mrkdwn: true,
+                blocks: payload,
                 channel: channelID
             });
             const thread_ts = message === null || message === void 0 ? void 0 : message.ts;
