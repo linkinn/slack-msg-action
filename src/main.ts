@@ -11,7 +11,7 @@ async function run(): Promise<void> {
       channelID,
       payload,
       threadTS
-    }) 
+    })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
