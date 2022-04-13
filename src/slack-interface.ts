@@ -1,5 +1,5 @@
 export interface ISlack {
-  payload: any
+  payload: string
   channelID: string
   threadTS: string
 }

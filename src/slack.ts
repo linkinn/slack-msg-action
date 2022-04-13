@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import {markdownToBlocks} from '@instantish/mack'
 import {WebClient} from '@slack/web-api'
 import {ISlack} from './slack-interface'
 
@@ -12,11 +13,12 @@ export async function slack({
   try {
     const slackToken = process.env.SLACK_TOKEN
     const webClient = new WebClient(slackToken)
+    const payloadMark = await markdownToBlocks(payload)
 
     if (threadTS) {
       await webClient.chat.postMessage({
         mrkdwn: true,
-        blocks: payload,
+        blocks: payloadMark,
         channel: channelID,
         thread_ts: threadTS
       })
@@ -26,7 +28,7 @@ export async function slack({
 
     const {message} = await webClient.chat.postMessage({
       mrkdwn: true,
-      blocks: payload,
+      blocks: payloadMark,
       channel: channelID
     })
 
