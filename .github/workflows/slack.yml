@@ -1,0 +1,16 @@
+name: Slack Send Message
+
+on:
+  workflow_dispatch:
+
+jobs:
+  slack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slack Send Message
+        uses: ./
+        with:
+          channel_id: ${{secrets.CHANNEL_ID}}
+          payload: 'hello world'
+        env:
+          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
