@@ -127,8 +127,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                 ? github_1.context.ref.slice(10)
                 : github_1.context.ref.slice(11);
             const repoName = github_1.context.repo.repo;
-            const workflowFileName = github_1.context.payload.workflow.split('/').slice(-1).pop();
-            const workflow = `${(_a = github_1.context.payload.repository) === null || _a === void 0 ? void 0 : _a.html_url}/actions/workflows/${workflowFileName}`;
+            const workflow = `${(_a = github_1.context.payload.repository) === null || _a === void 0 ? void 0 : _a.html_url}/actions/runs/${github_1.context.runId}`;
             if (threadTS) {
                 yield webClient.chat.postMessage({
                     mrkdwn: true,
@@ -138,7 +137,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                             text: {
                                 type: 'mrkdwn',
                                 text: payload ||
-                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
+                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
                             }
                         }
                     ],
@@ -155,7 +154,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                         text: {
                             type: 'mrkdwn',
                             text: payload ||
-                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
+                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
                         }
                     }
                 ],

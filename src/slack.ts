@@ -18,8 +18,7 @@ export async function slack({
       ? context.ref.slice(10)
       : context.ref.slice(11)
     const repoName = context.repo.repo
-    const workflowFileName = context.payload.workflow.split('/').slice(-1).pop()
-    const workflow = `${context.payload.repository?.html_url}/actions/workflows/${workflowFileName}`
+    const workflow = `${context.payload.repository?.html_url}/actions/runs/${context.runId}`
 
     if (threadTS) {
       await webClient.chat.postMessage({
@@ -31,7 +30,7 @@ export async function slack({
               type: 'mrkdwn',
               text:
                 payload ||
-                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
+                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
             }
           }
         ],
@@ -51,7 +50,7 @@ export async function slack({
             type: 'mrkdwn',
             text:
               payload ||
-              `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
+              `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
           }
         }
       ],
