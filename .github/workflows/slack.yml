@@ -29,3 +29,12 @@ jobs:
 
       - name: Echo Thread ID
         run: echo ${{ needs.slack.outputs.thread_ts }}
+
+      - name: Slack Send Message in Thread
+        uses: ./
+        with:
+          channel_id: ${{secrets.CHANNEL_ID}}
+          thread_ts: ${{ needs.slack.outputs.thread_ts }}
+          payload: 'Testa na thread'
+        env:
+          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
