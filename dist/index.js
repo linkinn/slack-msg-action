@@ -126,6 +126,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                 ? github_1.context.ref.slice(10)
                 : github_1.context.ref.slice(11);
             const repoName = github_1.context.repo.repo;
+            core.debug(github_1.context.action);
             if (threadTS) {
                 yield webClient.chat.postMessage({
                     mrkdwn: true,
