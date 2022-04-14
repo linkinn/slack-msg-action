@@ -124,6 +124,8 @@ function slack({ payload, channelID, threadTS }) {
     return __awaiter(this, void 0, void 0, function* () {
         core.debug(`Start slack message...`);
         core.debug(JSON.stringify(github_1.context));
+        core.debug(github_1.context.repo.repo);
+        core.debug(github_1.context.ref);
         try {
             const slackToken = process.env.SLACK_TOKEN;
             const webClient = new web_api_1.WebClient(slackToken);
