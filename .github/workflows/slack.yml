@@ -20,3 +20,12 @@ jobs:
 
       - name: Echo Thread ID
         run: echo ${{ steps.thread_id.outputs.thread_ts }}
+
+  slack-thread:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Github
+        uses: actions/checkout@v3
+
+      - name: Echo Thread ID
+        run: echo ${{ jobs.slack.steps.thread_id.outputs.thread_ts }}
