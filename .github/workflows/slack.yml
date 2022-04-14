@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Slack Send Message
-        id: thread_ts
+        id: thread_id
         uses: ./
         with:
           channel_id: ${{secrets.CHANNEL_ID}}
@@ -21,7 +21,8 @@ jobs:
           SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
 
       - name: Echo Thread ID
-        run: echo "::set-output name=thread_ts::${{ steps.thread_ts.outputs.thread_ts }}"
+        id: thread_ts
+        run: echo "::set-output name=thread_ts::${{ steps.thread_id.outputs.thread_ts }}"
 
   slack-thread:
     runs-on: ubuntu-latest
