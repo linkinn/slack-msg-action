@@ -1,14 +1,14 @@
 import * as core from '@actions/core'
-import {getOctokit, context} from '@actions/github'
+import {context} from '@actions/github'
 import {WebClient} from '@slack/web-api'
 import {ISlack} from './slack-interface'
 
-function githubToken(): string {
-  const token = process.env.GITHUB_TOKEN
-  if (!token)
-    throw ReferenceError('No token defined in the environment variables')
-  return token
-}
+// function githubToken(): string {
+//   const token = process.env.GITHUB_TOKEN
+//   if (!token)
+//     throw ReferenceError('No token defined in the environment variables')
+//   return token
+// }
 
 export async function slack({
   payload,
@@ -27,10 +27,12 @@ export async function slack({
         mrkdwn: true,
         blocks: [
           {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": payload || `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text:
+                payload ||
+                `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
             }
           }
         ],
@@ -45,10 +47,12 @@ export async function slack({
       mrkdwn: true,
       blocks: [
         {
-          "type": "section",
-          "text": {
-            "type": "mrkdwn",
-            "text": payload || `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text:
+              payload ||
+              `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
           }
         }
       ],

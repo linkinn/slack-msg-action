@@ -35,7 +35,7 @@ The action.yml defines news inputs and output for action.
 | Inputs                       |   required    |    default   |                  description                  |
 |------------------------------|:-------------:|-------------:|:---------------------------------------------:|
 | channel_id                   | true          | CHANGELOG.md | add channel id                                |
-| payload                      | true          | null         | add payload send message                      |
+| payload                      | false         | null         | add payload send message                      |
 | thread_ts                    | false         | null         | add thread id                                 |
 
 

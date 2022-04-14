@@ -6,7 +6,7 @@ inputs:
     required: true
     description: 'add channel id'
   payload:
-    required: true
+    required: false
     description: 'add payload send message'
   thread_ts:
     required: false
