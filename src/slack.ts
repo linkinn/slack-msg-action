@@ -18,6 +18,7 @@ export async function slack({
       ? context.ref.slice(10)
       : context.ref.slice(11)
     const repoName = context.repo.repo
+    core.debug(context.action)
 
     if (threadTS) {
       await webClient.chat.postMessage({
