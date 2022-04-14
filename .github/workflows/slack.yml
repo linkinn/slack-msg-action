@@ -6,12 +6,14 @@ on:
 jobs:
   slack:
     runs-on: ubuntu-latest
+    # outputs:
+    #   thread_ts: ${{ steps.thread_ts.outputs.test }}
     steps:
       - name: Checkout Github
         uses: actions/checkout@v3
 
       - name: Slack Send Message
-        id: thread_id
+        id: thread_ts
         uses: ./
         with:
           channel_id: ${{secrets.CHANNEL_ID}}
@@ -19,10 +21,11 @@ jobs:
           SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
 
       - name: Echo Thread ID
-        run: echo ${{ steps.thread_id.outputs.thread_ts }}
+        run: echo ${{ steps.thread_ts.outputs.thread_ts }}
 
   slack-thread:
     runs-on: ubuntu-latest
+    needs: slack
     steps:
       - name: Checkout Github
         uses: actions/checkout@v3
