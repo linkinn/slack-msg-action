@@ -18,22 +18,35 @@ export async function slack({
       ? context.ref.slice(10)
       : context.ref.slice(11)
     const repoName = context.repo.repo
-    const workflow = `${context.payload.repository?.html_url}/actions/runs/${context.runId}`
+    const runUrl = `${context.payload.repository?.html_url}/actions/runs/${context.runId}`
+
+    const blocks = [
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text:
+            payload ||
+            `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
+        },
+        accessory: {
+          type: 'button',
+          text: {
+            type: 'plain_text',
+            text: 'Clique aqui',
+            emoji: true
+          },
+          value: 'action run url',
+          url: runUrl,
+          action_id: 'button-action'
+        }
+      }
+    ]
 
     if (threadTS) {
       await webClient.chat.postMessage({
         mrkdwn: true,
-        blocks: [
-          {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text:
-                payload ||
-                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
-            }
-          }
-        ],
+        blocks,
         channel: channelID,
         thread_ts: threadTS
       })
@@ -43,17 +56,7 @@ export async function slack({
 
     const {message} = await webClient.chat.postMessage({
       mrkdwn: true,
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'mrkdwn',
-            text:
-              payload ||
-              `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
-          }
-        }
-      ],
+      blocks,
       channel: channelID
     })
 

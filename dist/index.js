@@ -127,20 +127,32 @@ function slack({ payload, channelID, threadTS, environment }) {
                 ? github_1.context.ref.slice(10)
                 : github_1.context.ref.slice(11);
             const repoName = github_1.context.repo.repo;
-            const workflow = `${(_a = github_1.context.payload.repository) === null || _a === void 0 ? void 0 : _a.html_url}/actions/runs/${github_1.context.runId}`;
+            const runUrl = `${(_a = github_1.context.payload.repository) === null || _a === void 0 ? void 0 : _a.html_url}/actions/runs/${github_1.context.runId}`;
+            const blocks = [
+                {
+                    type: 'section',
+                    text: {
+                        type: 'mrkdwn',
+                        text: payload ||
+                            `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
+                    },
+                    accessory: {
+                        type: "button",
+                        text: {
+                            type: "plain_text",
+                            text: "Clique aqui",
+                            emoji: true
+                        },
+                        value: "action run url",
+                        url: runUrl,
+                        action_id: "button-action"
+                    }
+                }
+            ];
             if (threadTS) {
                 yield webClient.chat.postMessage({
                     mrkdwn: true,
-                    blocks: [
-                        {
-                            type: 'section',
-                            text: {
-                                type: 'mrkdwn',
-                                text: payload ||
-                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
-                            }
-                        }
-                    ],
+                    blocks,
                     channel: channelID,
                     thread_ts: threadTS
                 });
@@ -148,16 +160,7 @@ function slack({ payload, channelID, threadTS, environment }) {
             }
             const { message } = yield webClient.chat.postMessage({
                 mrkdwn: true,
-                blocks: [
-                    {
-                        type: 'section',
-                        text: {
-                            type: 'mrkdwn',
-                            text: payload ||
-                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*\n<${workflow}|clique aqui para ver a action>`
-                        }
-                    }
-                ],
+                blocks,
                 channel: channelID
             });
             const thread_ts = message === null || message === void 0 ? void 0 : message.ts;
