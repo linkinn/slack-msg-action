@@ -136,17 +136,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                         text: payload ||
                             `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
                     },
-                    accessory: {
-                        type: "button",
-                        text: {
-                            type: "plain_text",
-                            text: "Clique aqui",
-                            emoji: true
-                        },
-                        value: "action run url",
-                        url: runUrl,
-                        action_id: "button-action"
-                    }
+                    accessory: {}
                 }
             ];
             if (threadTS) {
@@ -158,6 +148,17 @@ function slack({ payload, channelID, threadTS, environment }) {
                 });
                 return;
             }
+            blocks[0].accessory = {
+                type: 'button',
+                text: {
+                    type: 'plain_text',
+                    text: 'Clique aqui',
+                    emoji: true
+                },
+                value: 'action run url',
+                url: runUrl,
+                action_id: 'button-action'
+            };
             const { message } = yield webClient.chat.postMessage({
                 mrkdwn: true,
                 blocks,

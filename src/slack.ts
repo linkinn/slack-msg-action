@@ -29,17 +29,7 @@ export async function slack({
             payload ||
             `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
         },
-        accessory: {
-          type: 'button',
-          text: {
-            type: 'plain_text',
-            text: 'Clique aqui',
-            emoji: true
-          },
-          value: 'action run url',
-          url: runUrl,
-          action_id: 'button-action'
-        }
+        accessory: {}
       }
     ]
 
@@ -52,6 +42,18 @@ export async function slack({
       })
 
       return
+    }
+
+    blocks[0].accessory = {
+      type: 'button',
+      text: {
+        type: 'plain_text',
+        text: 'Clique aqui',
+        emoji: true
+      },
+      value: 'action run url',
+      url: runUrl,
+      action_id: 'button-action'
     }
 
     const {message} = await webClient.chat.postMessage({
