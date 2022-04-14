@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import {context} from '@actions/github'
 import {WebClient} from '@slack/web-api'
-import {ISlack} from './slack-interface'
+import {ISlack, IBlocks} from './slack-interface'
 
 export async function slack({
   payload,
@@ -20,7 +20,7 @@ export async function slack({
     const repoName = context.repo.repo
     const runUrl = `${context.payload.repository?.html_url}/actions/runs/${context.runId}`
 
-    const blocks = [
+    const blocks: IBlocks[] = [
       {
         type: 'section',
         text: {
@@ -28,8 +28,7 @@ export async function slack({
           text:
             payload ||
             `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
-        },
-        accessory: {}
+        }
       }
     ]
 

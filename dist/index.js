@@ -135,8 +135,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                         type: 'mrkdwn',
                         text: payload ||
                             `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
-                    },
-                    accessory: {}
+                    }
                 }
             ];
             if (threadTS) {
