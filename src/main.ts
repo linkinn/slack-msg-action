@@ -6,11 +6,13 @@ async function run(): Promise<void> {
     const channelID = core.getInput('channel_id')
     const payload = core.getInput('payload')
     const threadTS = core.getInput('thread_ts')
+    const environment = core.getInput('environment')
 
     slack({
       channelID,
       payload,
-      threadTS
+      threadTS,
+      environment
     })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)

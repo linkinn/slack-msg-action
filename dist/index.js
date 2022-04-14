@@ -55,10 +55,12 @@ function run() {
             const channelID = core.getInput('channel_id');
             const payload = core.getInput('payload');
             const threadTS = core.getInput('thread_ts');
+            const environment = core.getInput('environment');
             (0, slack_1.slack)({
                 channelID,
                 payload,
-                threadTS
+                threadTS,
+                environment
             });
         }
         catch (error) {
@@ -114,21 +116,16 @@ exports.slack = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github_1 = __nccwpck_require__(5438);
 const web_api_1 = __nccwpck_require__(431);
-// function githubToken(): string {
-//   const token = process.env.GITHUB_TOKEN
-//   if (!token)
-//     throw ReferenceError('No token defined in the environment variables')
-//   return token
-// }
-function slack({ payload, channelID, threadTS }) {
+function slack({ payload, channelID, threadTS, environment }) {
     return __awaiter(this, void 0, void 0, function* () {
         core.debug(`Start slack message...`);
-        core.debug(JSON.stringify(github_1.context));
-        core.debug(github_1.context.repo.repo);
-        core.debug(github_1.context.ref);
         try {
             const slackToken = process.env.SLACK_TOKEN;
             const webClient = new web_api_1.WebClient(slackToken);
+            const tag = github_1.context.ref.includes('refs/tags/')
+                ? github_1.context.ref.slice(10)
+                : github_1.context.ref.slice(11);
+            const repoName = github_1.context.repo.repo;
             if (threadTS) {
                 yield webClient.chat.postMessage({
                     mrkdwn: true,
@@ -138,7 +135,7 @@ function slack({ payload, channelID, threadTS }) {
                             text: {
                                 type: 'mrkdwn',
                                 text: payload ||
-                                    `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
                             }
                         }
                     ],
@@ -155,7 +152,7 @@ function slack({ payload, channelID, threadTS }) {
                         text: {
                             type: 'mrkdwn',
                             text: payload ||
-                                `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
                         }
                     }
                 ],

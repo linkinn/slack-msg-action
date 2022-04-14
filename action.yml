@@ -11,6 +11,10 @@ inputs:
   thread_ts:
     required: false
     description: 'add thread id'
+  environment:
+    required: true
+    description: 'add name environment'
+    default: 'Sandbox'
 runs:
   using: 'node16'
   main: 'dist/index.js'

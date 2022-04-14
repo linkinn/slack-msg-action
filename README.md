@@ -37,6 +37,7 @@ The action.yml defines news inputs and output for action.
 | channel_id                   | true          | CHANGELOG.md | add channel id                                |
 | payload                      | false         | null         | add payload send message                      |
 | thread_ts                    | false         | null         | add thread id                                 |
+| environment                  | true          | Sandbox      | add name environment                          |
 
 
 ## Example

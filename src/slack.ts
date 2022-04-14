@@ -3,26 +3,21 @@ import {context} from '@actions/github'
 import {WebClient} from '@slack/web-api'
 import {ISlack} from './slack-interface'
 
-// function githubToken(): string {
-//   const token = process.env.GITHUB_TOKEN
-//   if (!token)
-//     throw ReferenceError('No token defined in the environment variables')
-//   return token
-// }
-
 export async function slack({
   payload,
   channelID,
-  threadTS
+  threadTS,
+  environment
 }: ISlack): Promise<void> {
   core.debug(`Start slack message...`)
-  core.debug(JSON.stringify(context))
-  core.debug(context.repo.repo)
-  core.debug(context.ref)
 
   try {
     const slackToken = process.env.SLACK_TOKEN
     const webClient = new WebClient(slackToken)
+    const tag = context.ref.includes('refs/tags/')
+      ? context.ref.slice(10)
+      : context.ref.slice(11)
+    const repoName = context.repo.repo
 
     if (threadTS) {
       await webClient.chat.postMessage({
@@ -34,7 +29,7 @@ export async function slack({
               type: 'mrkdwn',
               text:
                 payload ||
-                `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
             }
           }
         ],
@@ -54,7 +49,7 @@ export async function slack({
             type: 'mrkdwn',
             text:
               payload ||
-              `@channel Deploy *{{repo.name}}* \`{{repo.version}}\` em *{{repo.envirenmont}}*`
+              `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
           }
         }
       ],
