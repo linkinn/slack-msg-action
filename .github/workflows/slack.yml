@@ -6,8 +6,8 @@ on:
 jobs:
   slack:
     runs-on: ubuntu-latest
-    # outputs:
-    #   thread_ts: ${{ steps.thread_ts.outputs.test }}
+    outputs:
+      thread_ts: ${{ steps.thread_ts.outputs.thread_ts }}
     steps:
       - name: Checkout Github
         uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
           SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
 
       - name: Echo Thread ID
-        run: echo ${{ steps.thread_ts.outputs.thread_ts }}
+        run: echo "::set-output name=thread_ts::${{ steps.thread_ts.outputs.thread_ts }}"
 
   slack-thread:
     runs-on: ubuntu-latest
@@ -31,4 +31,4 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Echo Thread ID
-        run: echo ${{ jobs.slack.steps.thread_id.outputs.thread_ts }}
+        run: echo ${{ needs.slack.steps.outputs.thread_ts }}
