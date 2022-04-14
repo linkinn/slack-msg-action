@@ -117,6 +117,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const github_1 = __nccwpck_require__(5438);
 const web_api_1 = __nccwpck_require__(431);
 function slack({ payload, channelID, threadTS, environment }) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         core.debug(`Start slack message...`);
         try {
@@ -126,7 +127,8 @@ function slack({ payload, channelID, threadTS, environment }) {
                 ? github_1.context.ref.slice(10)
                 : github_1.context.ref.slice(11);
             const repoName = github_1.context.repo.repo;
-            core.debug(github_1.context.action);
+            const workflowFileName = github_1.context.payload.workflow.split('/').slice(-1).pop();
+            const workflow = `${(_a = github_1.context.payload.repository) === null || _a === void 0 ? void 0 : _a.html_url}/actions/workflows/${workflowFileName}`;
             if (threadTS) {
                 yield webClient.chat.postMessage({
                     mrkdwn: true,
@@ -136,7 +138,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                             text: {
                                 type: 'mrkdwn',
                                 text: payload ||
-                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
+                                    `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
                             }
                         }
                     ],
@@ -153,7 +155,7 @@ function slack({ payload, channelID, threadTS, environment }) {
                         text: {
                             type: 'mrkdwn',
                             text: payload ||
-                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}*`
+                                `@channel Deploy *${repoName}* \`${tag}\` em *${environment}* <${workflow}|action>`
                         }
                     }
                 ],
