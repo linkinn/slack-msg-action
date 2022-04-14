@@ -17,6 +17,8 @@ export async function slack({
 }: ISlack): Promise<void> {
   core.debug(`Start slack message...`)
   core.debug(JSON.stringify(context))
+  core.debug(context.repo.repo)
+  core.debug(context.ref)
 
   try {
     const slackToken = process.env.SLACK_TOKEN
