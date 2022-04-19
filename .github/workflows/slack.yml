@@ -74,8 +74,6 @@ jobs:
           channel_id: ${{secrets.CHANNEL_ID}}
           thread_ts: ${{ needs.slack.outputs.thread_ts }}
           payload: 'start3'
-        env:
-          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
 
   slack-thread-finished:
     runs-on: ubuntu-latest
