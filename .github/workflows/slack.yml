@@ -20,7 +20,7 @@ jobs:
         env:
           SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
 
-  slack-thread:
+  slack-thread-start:
     runs-on: ubuntu-latest
     needs: slack
     steps:
@@ -35,6 +35,63 @@ jobs:
         with:
           channel_id: ${{secrets.CHANNEL_ID}}
           thread_ts: ${{ needs.slack.outputs.thread_ts }}
-          payload: 'Testa na thread'
+          payload: 'start'
+        env:
+          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
+
+  slack-thread-start2:
+    runs-on: ubuntu-latest
+    needs: slack
+    steps:
+      - name: Checkout Github
+        uses: actions/checkout@v3
+
+      - name: Echo Thread ID
+        run: echo ${{ needs.slack.outputs.thread_ts }}
+
+      - name: Slack Send Message in Thread
+        uses: ./
+        with:
+          channel_id: ${{secrets.CHANNEL_ID}}
+          thread_ts: ${{ needs.slack.outputs.thread_ts }}
+          payload: 'start2'
+        env:
+          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
+
+  slack-thread-start3:
+    runs-on: ubuntu-latest
+    needs: slack
+    steps:
+      - name: Checkout Github
+        uses: actions/checkout@v3
+
+      - name: Echo Thread ID
+        run: echo ${{ needs.slack.outputs.thread_ts }}
+
+      - name: Slack Send Message in Thread
+        uses: ./
+        with:
+          channel_id: ${{secrets.CHANNEL_ID}}
+          thread_ts: ${{ needs.slack.outputs.thread_ts }}
+          payload: 'start3'
+        env:
+          SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
+
+  slack-thread-finished:
+    runs-on: ubuntu-latest
+    needs: [slack, slack-thread-start, slack-thread-start2, slack-thread-start3]
+    steps:
+      - name: Checkout Github
+        uses: actions/checkout@v3
+
+      - name: Echo Thread ID
+        run: echo ${{ needs.slack.outputs.thread_ts }}
+
+      - name: Slack Send Message in Thread
+        uses: ./
+        with:
+          channel_id: ${{secrets.CHANNEL_ID}}
+          thread_ts: ${{ needs.slack.outputs.thread_ts }}
+          payload: 'finished'
         env:
           SLACK_TOKEN: ${{secrets.SLACK_TOKEN}}
